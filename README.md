@@ -1,3 +1,10 @@
-# Valtavan suuri otsikko
+# Ohjelmistotekniikka, harjoitustyö
 
-Tämä tiedosto sisältää tekstiä, josta osa on **boldattua** ja osa *kursivoitua*.
+## Tehtävät
+
+### Viikko 1
+
+[gitlog.txt](https://github.com/ankkalampi/ot-harjoitustyo/blob/master/laskarit/viikko1/gitlog.txt)
+
+[komentorivi.txt](https://github.com/ankkalampi/ot-harjoitustyo/blob/master/laskarit/viikko1/komentorivi.txt)
+
