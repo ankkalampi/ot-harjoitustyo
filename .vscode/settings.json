@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./laskarit/viikko2/unicafe/src"
+    ]
+}
