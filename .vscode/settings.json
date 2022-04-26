@@ -1,5 +1,8 @@
 {
     "python.analysis.extraPaths": [
-        "./laskarit/viikko2/unicafe/src"
+        "./laskarit/viikko2/unicafe/src",
+        "./src/domain",
+        "./src",
+        "./src"
     ]
 }
