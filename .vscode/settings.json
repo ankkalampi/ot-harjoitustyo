@@ -3,6 +3,8 @@
         "./laskarit/viikko2/unicafe/src",
         "./src/domain",
         "./src",
+        "./src",
+        "./src",
         "./src"
     ]
 }
