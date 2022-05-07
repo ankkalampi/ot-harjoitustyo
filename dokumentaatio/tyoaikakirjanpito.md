@@ -7,3 +7,4 @@
 | 25.4. | 2 | Suunnittelua |
 | 26.4. | 5 | import-taistelua sekä toiminnallisuuden lisäämistä |
 | 3.5.  | 8 | pelaajahahmon liikkumisen parantelua, yksinkertainen tekoäly hirviöille sekä refaktorointia | 
+| 6.5.  | 6 | levelin generoiminen, liikkuvan kameran rakentelua | 
