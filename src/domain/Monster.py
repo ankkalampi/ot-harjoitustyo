@@ -1,50 +1,79 @@
 import pygame
 import os
+from domain.Initvalues import MONSTERACCELERATION, MONSTERJUMPACCELERATION, MONSTERMAXSPEED
 from domain.Player import Player
-from domain.Initvalues import HEIGHT, WIDTH, FOLLOWDISTANCE, MONSTERSPEED
+from domain.Initvalues import *
+from domain.Entity import Entity
 
 
 dirname = os.path.dirname(__file__)
 
 
-class Monster(pygame.sprite.Sprite):
+class Monster(Entity):
    
 
     def __init__(self, x, y, player):
-        super().__init__()
-
-
-        self.image = pygame.image.load(
-            os.path.join(dirname, "..", "assets", "monster.png")
-        )
-
-        self.rect = self.image.get_rect()
-
-        self.rect.x = x
-        self.rect.y = y
-
+        self.player = player
+        filename = "monster.png"
+        acceleration = MONSTERACCELERATION
+        jump_height = MONSTERJUMPACCELERATION
+        max_speed = MONSTERMAXSPEED
+        jump_acceleration = MONSTERJUMP
+        super().__init__(x, y, filename, acceleration, jump_height, max_speed, jump_acceleration)
+        self.hunting = False
         self.homex = x
         self.homey = y
+        
+    
+    def hunt(self):
+        self.image = pygame.image.load(
+            os.path.join(dirname, "..", "assets","monster.png")
+        )
+        ##self.image = pygame.transform.scale(self.image, (BLOCKWIDTH * 3, BLOCKHEIGHT * 3))
 
-        self.player = player
+        self.at_home = False
 
-        self.falling = True
-        self.hunting = False
+        if self.rect.x < self.player.rect.x:
+                self.going_right = True
+                self.going_left = False
+        elif self.rect.x > self.player.rect.x:
+                self.going_right = False
+                self.going_left = True
 
+        if self.rect.x > self.player.rect.x  - 20 and self.rect.y > self.player.rect.y:
+            self.jump = True
+
+        if self.rect.x < self.player.rect.x + 20 and self.rect.y > self.player.rect.y:
+            self.jump = True
+
+    def go_home(self):
+        self.image = pygame.image.load(
+            os.path.join(dirname, "..", "assets", "monster_passive.png")
+        )
+        ##self.image = pygame.transform.scale(self.image, (BLOCKWIDTH * 3, BLOCKHEIGHT * 3))
+
+        
+
+        
+        
+        
+        
+        if self.rect.x > self.homex:
+            self.going_left = True
+            self.going_right = False
+        elif self.rect.x < self.homex:
+            self.going_left = False
+            self.going_right = True
+
+
+        if self.rect.x < self.homex + 10 and self.rect.x > self.homex -10:
+            self.going_left = False
+            self.going_right = False
+
+
+        
 
     
-
-    def moveself(self, dx, dy):
-        if self.rect.x + dx +39 > WIDTH or self.rect.x + dx < 0:
-            dx = 0
-
-        if self.rect.y + dy +54 > HEIGHT or self.rect.y + dy < 0:
-            dy = 0
- 
-        self.rect.move_ip(dx, dy)
-
-        if self.falling:
-            self.rect.move_ip(0, 2)
 
     def act(self):
 
@@ -56,25 +85,11 @@ class Monster(pygame.sprite.Sprite):
             self.hunting = True
            
         if self.hunting:
-            targetx = self.player.rect.x
-            targety = self.player.rect.y
+            self.hunt()
         else:
-            targetx = self.homex
-            targety = self.homey
+            self.go_home()
 
+        
 
-        if self.rect.x < targetx:
-            dx = MONSTERSPEED
-        else:
-            dx = -MONSTERSPEED
-
-        if self.rect.y < targety:
-            dy = MONSTERSPEED
-            
-        else:
-            dy = -MONSTERSPEED
-            
-        dy = 0
-
-        self.moveself(dx, dy)
+        self.moveself()
             

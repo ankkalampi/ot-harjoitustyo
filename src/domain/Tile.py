@@ -1,5 +1,6 @@
 import pygame
 import os
+from domain.Initvalues import *
 
 dirname = os.path.dirname(__file__)
 
@@ -17,3 +18,5 @@ class Tile(pygame.sprite.Sprite):
 
         self.rect.x = x
         self.rect.y = y
+
+        self.image.convert()

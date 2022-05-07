@@ -7,34 +7,22 @@ from domain.NPC import NPC
 from domain.Player import Player
 from domain.Initvalues import *
 from domain.Tile import Tile
+from domain.Camera import Camera
  
 pygame.init()
  
 
- 
-displaysurface = pygame.display.set_mode((WIDTH, HEIGHT))
+canvas = pygame.Surface((WIDTH * 2, HEIGHT * 2))
+window = pygame.display.set_mode((WIDTH, HEIGHT))
+
 pygame.display.set_caption("Peli")
-player = Player(200,50)
-monsters = []
-NPCs = []
-tiles = []
-monsters.append(Monster(20, 50, player))
-monsters.append(Monster(80, 100, player))
-monsters.append(Monster(120, 50, player))
-
-NPCs.append(NPC(80, 30))
-NPCs.append(NPC(250, 300))
 
 
-def build_floor(length, startx, starty, tiles):
-    for x in range(1, length):
-        tiles.append(Tile((startx + x * 39), starty))
+level1 = Level("level1.txt")
+player = level1.player
 
 
-
-build_floor(20, 420, 500, tiles)
-
-level1 = Level(monsters, NPCs, tiles, player)
+camera1 = Camera(player, canvas, window, level1)
 
 kello = pygame.time.Clock()
 oikealle = False
@@ -46,9 +34,8 @@ alas = False
 run = True
 
 while run:
-    displaysurface.fill((20,30,50))
-    level1.all_sprites.draw(displaysurface)
-    level1.all_sprites.update()
+    
+    
     
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
@@ -73,21 +60,11 @@ while run:
         if event.type == pygame.QUIT:
             run = False
 
+ 
+    level1.update_level()
+    camera1.update()
 
     
-    for monster in monsters:
-        monster.act()   
-
-    player.act()
-
-        
-
-    for npc in NPCs:
-        pass
-
-    
-
-
-    pygame.display.flip()
-    kello.tick(60)
+    pygame.display.update()
+    kello.tick(100)
 pygame.quit()

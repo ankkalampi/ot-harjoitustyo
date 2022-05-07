@@ -12,6 +12,9 @@ class Entity(pygame.sprite.Sprite):
         self.image = pygame.image.load(
             os.path.join(dirname, "..", "assets", filename)
         )
+        ##self.image = pygame.transform.scale(self.image, (BLOCKWIDTH * 3, BLOCKHEIGHT * 3))
+
+        
 
         self.jump_acceleration = jump_acceleration
         self.acceleration = acceleration
@@ -32,6 +35,9 @@ class Entity(pygame.sprite.Sprite):
         self.left_force = 0
         self.jump_force = 0
 
+        self.can_jump = False
+        
+
 
         self.deceleration = 1
         self.dx = 0
@@ -42,6 +48,9 @@ class Entity(pygame.sprite.Sprite):
     def moveself(self):
 
         
+        if self.falling:
+            self.dy += FALLINGSPEED
+
         
     
 
@@ -52,8 +61,11 @@ class Entity(pygame.sprite.Sprite):
             self.dx += self.acceleration
 
         if self.jump:
-            self.jump = False
-            self.dy -= self.jump_height
+            if self.can_jump:
+                self.jump = False
+                self.can_jump = False
+                self.dy -= self.jump_height
+                
 
         if self.dx < -self.max_speed:
             self.dx = -self.max_speed
@@ -64,8 +76,7 @@ class Entity(pygame.sprite.Sprite):
 
         
 
-        if self.falling:
-            self.dy += FALLINGSPEED
+        
 
         if self.dx < 0:
             self.dx += self.deceleration
@@ -73,11 +84,14 @@ class Entity(pygame.sprite.Sprite):
         if self.dx > 0:
             self.dx -= self.deceleration
 
-        if self.rect.x + self.dx + BLOCKWIDTH > WIDTH or self.rect.x + self.dx < 0:
+        if self.rect.x + self.dx + BLOCKWIDTH * 3 > WIDTH or self.rect.x + self.dx < 0:
             self.dx = 0
 
-        if self.rect.y + self.dy + BLOCKHEIGHT > HEIGHT or self.rect.y + self.dy < 0:
+        if self.rect.y + self.dy + BLOCKHEIGHT * 3> HEIGHT or self.rect.y + self.dy < 0:
             self.dy = 0
+
+        if self.rect.y + BLOCKHEIGHT * 3 >= HEIGHT:
+            self.can_jump = True
 
         self.rect.move_ip(self.dx, self.dy)
 
