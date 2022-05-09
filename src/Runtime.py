@@ -12,7 +12,7 @@ from domain.Camera import Camera
 pygame.init()
  
 
-canvas = pygame.Surface((WIDTH * 2, HEIGHT * 2))
+##canvas = pygame.Surface((WIDTH * 2, HEIGHT * 2))
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 
 pygame.display.set_caption("Peli")
@@ -22,7 +22,7 @@ level1 = Level("level1.txt")
 player = level1.player
 
 
-camera1 = Camera(player, canvas, window, level1)
+camera1 = Camera(player, window, level1)
 
 kello = pygame.time.Clock()
 oikealle = False
@@ -67,4 +67,5 @@ while run:
     
     pygame.display.update()
     kello.tick(100)
+    ##print("Falling: " , player.falling, "   Can jump: ", player.can_jump)
 pygame.quit()

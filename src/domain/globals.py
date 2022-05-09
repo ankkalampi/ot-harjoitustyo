@@ -1,2 +1,8 @@
-HEIGHT = 800
-WIDTH =  600
+
+global level_width 
+global level_height
+
+global player_health
+
+
+

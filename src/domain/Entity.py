@@ -2,6 +2,7 @@ import pygame
 import os
 from domain.Initvalues import *
 from domain.Initvalues import FALLINGSPEED
+import domain.Globals
 
 dirname = os.path.dirname(__file__)
 
@@ -12,6 +13,7 @@ class Entity(pygame.sprite.Sprite):
         self.image = pygame.image.load(
             os.path.join(dirname, "..", "assets", filename)
         )
+        self.image.convert()
         ##self.image = pygame.transform.scale(self.image, (BLOCKWIDTH * 3, BLOCKHEIGHT * 3))
 
         
@@ -40,8 +42,12 @@ class Entity(pygame.sprite.Sprite):
 
 
         self.deceleration = 1
-        self.dx = 0
-        self.dy = 0
+        
+
+       
+
+        self.move_vector = pygame.Vector2()
+        self.move_vector.xy = (0,0)
    
 
 
@@ -49,51 +55,84 @@ class Entity(pygame.sprite.Sprite):
 
         
         if self.falling:
-            self.dy += FALLINGSPEED
-
+            
+            self.move_vector.y += FALLINGSPEED 
+        else:
+            self.move_vector.y = 0
         
     
 
         if self.going_left:
-            self.dx -= self.acceleration
+           
+            self.move_vector.x -= self.acceleration
 
         if self.going_right:
-            self.dx += self.acceleration
+            
+            self.move_vector.x += self.acceleration
 
         if self.jump:
             if self.can_jump:
-                self.jump = False
+
                 self.can_jump = False
-                self.dy -= self.jump_height
+                self.falling = True
+                self.move_vector.y -= self.jump_height
+                
                 
 
-        if self.dx < -self.max_speed:
-            self.dx = -self.max_speed
+        if self.move_vector.x < -self.max_speed:
+            
+            self.move_vector.x = -self.max_speed
 
-        if self.dx > self.max_speed:
-            self.dx = self.max_speed
+        if self.move_vector.x > self.max_speed:
+           
+            self.move_vector.x = self.max_speed
         
 
         
 
         
 
-        if self.dx < 0:
-            self.dx += self.deceleration
+        if self.move_vector.x < 0:
+            
+            self.move_vector.x += self.deceleration
 
-        if self.dx > 0:
-            self.dx -= self.deceleration
+        if self.move_vector.x > 0:
+            
+            self.move_vector.x -= self.deceleration
 
-        if self.rect.x + self.dx + BLOCKWIDTH * 3 > WIDTH or self.rect.x + self.dx < 0:
-            self.dx = 0
 
-        if self.rect.y + self.dy + BLOCKHEIGHT * 3> HEIGHT or self.rect.y + self.dy < 0:
-            self.dy = 0
 
-        if self.rect.y + BLOCKHEIGHT * 3 >= HEIGHT:
+
+        if self.rect.right + self.move_vector.x > domain.Globals.level_width:
+            
+            self.move_vector.x = 0
+            self.rect.right = domain.Globals.level_width
+            
+            
+        if self.rect.left + self.move_vector.x < 0:
+            
+            self.move_vector.x = 0
+            self.rect.left = 0
+
+        if self.rect.bottom + self.move_vector.y > domain.Globals.level_height:
+            
+            self.move_vector.y = 0
+            self.rect.bottom = domain.Globals.level_height
+
+
+        if self.rect.top + self.move_vector.y < 0:
+            
+            self.move_vector.y = 0
+            self.rect.top = 0
+
+
+
+
+        if self.rect.bottom >= domain.Globals.level_height:
             self.can_jump = True
+            self.falling = False
 
-        self.rect.move_ip(self.dx, self.dy)
+        self.rect.move_ip(self.move_vector.x, self.move_vector.y)
 
 
     

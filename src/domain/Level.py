@@ -5,6 +5,7 @@ from domain.Monster import Monster
 from domain.Player import Player
 from domain.Tile import Tile
 from domain.NPC import NPC
+import domain.Globals 
 
 
 
@@ -79,8 +80,8 @@ class Level:
                 coordinate_x +=1
             coordinate_y += 1
 
-        self.level_size_x = coordinate_x
-        self.level_size_y = coordinate_y
+        domain.Globals.level_width = coordinate_x * BLOCKWIDTH
+        domain.Globals.level_height = coordinate_y * BLOCKHEIGHT
 
 
     def update_level(self):
@@ -93,6 +94,7 @@ class Level:
             collided = pygame.sprite.spritecollide(entity, self.tiles, False, False)
             for col in collided:
                 entity.falling = False
+                entity.can_jump = True
 
             entity.act()
         
