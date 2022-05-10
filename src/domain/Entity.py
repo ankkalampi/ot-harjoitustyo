@@ -14,7 +14,7 @@ class Entity(pygame.sprite.Sprite):
             os.path.join(dirname, "..", "assets", filename)
         )
         self.image.convert()
-        ##self.image = pygame.transform.scale(self.image, (BLOCKWIDTH * 3, BLOCKHEIGHT * 3))
+        
 
         
 
@@ -52,8 +52,8 @@ class Entity(pygame.sprite.Sprite):
 
 
     def moveself(self):
-
-        
+        """
+    ## insert gravity if sprite not in stable position
         if self.falling:
             
             self.move_vector.y += FALLINGSPEED 
@@ -62,6 +62,7 @@ class Entity(pygame.sprite.Sprite):
         
     
 
+    ## insert movement from input
         if self.going_left:
            
             self.move_vector.x -= self.acceleration
@@ -79,6 +80,7 @@ class Entity(pygame.sprite.Sprite):
                 
                 
 
+    ## restrict move vector to max speed
         if self.move_vector.x < -self.max_speed:
             
             self.move_vector.x = -self.max_speed
@@ -91,7 +93,7 @@ class Entity(pygame.sprite.Sprite):
         
 
         
-
+    ## apply acceleration
         if self.move_vector.x < 0:
             
             self.move_vector.x += self.deceleration
@@ -102,7 +104,7 @@ class Entity(pygame.sprite.Sprite):
 
 
 
-
+    ## Check level boundaries, restrict sprite movement over boundaries
         if self.rect.right + self.move_vector.x > domain.Globals.level_width:
             
             self.move_vector.x = 0
@@ -127,14 +129,137 @@ class Entity(pygame.sprite.Sprite):
 
 
 
-
+    ## check collision with level floor
         if self.rect.bottom >= domain.Globals.level_height:
             self.can_jump = True
             self.falling = False
 
+
+    ## apply move vector to sprite
         self.rect.move_ip(self.move_vector.x, self.move_vector.y)
 
 
+   
+
+    ## check collision with terrain
+        for terrain in domain.Globals.all_terrains:
+            if self.rect.colliderect(terrain.rect):
+                if self.move_vector.x > 0:
+                    
+                    self.rect.right = terrain.rect.left
+                if self.move_vector.x < 0:
+                    
+                    self.rect.left = terrain.rect.right
+                if self.move_vector.y > 0:
+                    
+                    self.rect.bottom = terrain.rect.top
+                if self.move_vector.y < 0:
+                    
+                    self.rect.top = terrain.rect.bottom 
+    """
+        ## add gravity
+        if self.falling:
+
+            self.move_vector.y += FALLINGSPEED
+        else:
+            self.move_vector.y = 0
+
+        ## add input force
+        if self.move_vector.x > -self.max_speed and self.move_vector.x < self.max_speed:
+            if self.going_left:
+                    self.move_vector.x -= self.acceleration
+
+            if self.going_right:
+                    self.move_vector.x += self.acceleration
+
+        if self.jump and not self.falling:
+            self.move_vector.y -= self.jump_height
+            self.falling = True
+
+        ## add deceleration
+        if self.move_vector.x > 0:
+            self.move_vector.x -= 1
+        elif self.move_vector.x < 0:
+            self.move_vector.x += 1
+
+        ## check collision
+
+
+       
+
+
+        ## Check level boundaries, restrict sprite movement over boundaries
+        if self.rect.right + self.move_vector.x > domain.Globals.level_width:
+            
+            self.move_vector.x = 0
+            self.rect.right = domain.Globals.level_width
+            
+            
+        if self.rect.left + self.move_vector.x < 0:
+            
+            self.move_vector.x = 0
+            self.rect.left = 0
+
+        if self.rect.bottom + self.move_vector.y > domain.Globals.level_height:
+            
+            self.move_vector.y = 0
+            self.rect.bottom = domain.Globals.level_height
+
+
+        if self.rect.top + self.move_vector.y < 0:
+            
+            self.move_vector.y = 0
+            self.rect.top = 0
+
+
+
+        ## check collision with level floor
+        if self.rect.bottom >= domain.Globals.level_height:
+            self.can_jump = True
+            self.falling = False
+
+
+        
+
+        ## update position
+        ##self.rect.move_ip(self.move_vector.x, self.move_vector.y)
+
+
+         ## check collision with terrain
+        
+        
+
+        if self.move_vector.x != 0:
+            self.move_single_axis(self.move_vector.x, 0)
+        if self.move_vector.y != 0:
+            
+            self.move_single_axis(0, self.move_vector.y)
+
+
+        
+        
+
+    def move_single_axis(self, dx, dy):
+        self.rect.move_ip(dx, dy)
+        
+        for terrain in domain.Globals.all_terrains:
+            if self.rect.colliderect(terrain.rect):
+                
+                if dx > 0: 
+                    self.rect.right = terrain.rect.left
+                    self.move_vector.x = 0
+                if dx < 0: 
+                    self.rect.left = terrain.rect.right
+                    self.move_vector.x = 0
+                if dy > 0: 
+                    self.rect.bottom = terrain.rect.top
+                    
+                    self.falling = False
+                if dy < 0: 
+                    self.rect.top = terrain.rect.bottom
+
+
+        
     
 
     def act(self):

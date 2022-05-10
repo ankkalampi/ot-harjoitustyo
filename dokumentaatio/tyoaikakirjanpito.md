@@ -9,3 +9,4 @@
 | 3.5.  | 8 | pelaajahahmon liikkumisen parantelua, yksinkertainen tekoäly hirviöille sekä refaktorointia | 
 | 6.5.  | 6 | levelin generoiminen, liikkuvan kameran rakentelua | 
 | 9.5. | 4 | pelaajahahmoa seuraava kamera, collision detectionin parantelua |
+| 10.5. | 5 | collision detectionin parantelua, refaktorointia |

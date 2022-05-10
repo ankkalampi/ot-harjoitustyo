@@ -12,23 +12,20 @@ from domain.Camera import Camera
 pygame.init()
  
 
-##canvas = pygame.Surface((WIDTH * 2, HEIGHT * 2))
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 
 pygame.display.set_caption("Peli")
 
 
 level1 = Level("level1.txt")
+level1.load()
 player = level1.player
 
 
 camera1 = Camera(player, window, level1)
 
 kello = pygame.time.Clock()
-oikealle = False
-vasemmalle = False
-ylos = False
-alas = False
+
 
 
 run = True
@@ -67,5 +64,7 @@ while run:
     
     pygame.display.update()
     kello.tick(100)
+    ##print(kello.get_fps())
     ##print("Falling: " , player.falling, "   Can jump: ", player.can_jump)
+    print("MOVE VECTOR Y:  " , player.move_vector.y, " FALLING: ", player.falling)
 pygame.quit()

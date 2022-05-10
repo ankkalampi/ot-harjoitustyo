@@ -24,17 +24,19 @@ class Level:
         self.tiles = []
         self.player = Player(0,0)
         self.all_entities = []
+        self.all_terrains = []
         self.level_size = (0,0)
         self.level_size_x = 0
         self.level_size_y = 0
-
-        self.create_level(path)
+        self.path = path
+        
 
         self.colliding_entities = dict()
 
+    
 
-    def create_level(self, path):
-        with open(path) as l:
+    def load(self):
+        with open(self.path) as l:
             lines = l.readlines()
 
        
@@ -48,7 +50,7 @@ class Level:
                 if chr == "#":
                     tile = Tile((coordinate_x * BLOCKWIDTH * BLOCK_SIZE), (coordinate_y * BLOCKHEIGHT * BLOCK_SIZE))
                     self.tiles.append(tile)
-                    
+                    self.all_terrains.append(tile)
                     self.all_sprites.add(tile)
                     self.tile_sprites.add(tile)
                     
@@ -83,18 +85,22 @@ class Level:
         domain.Globals.level_width = coordinate_x * BLOCKWIDTH
         domain.Globals.level_height = coordinate_y * BLOCKHEIGHT
 
+        domain.Globals.all_entities = self.all_entities
+        domain.Globals.all_terrains = self.all_terrains
+
 
     def update_level(self):
 
         
 
         
-        for entity in self.all_entities:
-            entity.falling = True
+        for entity in domain.Globals.all_entities:
+            """ entity.falling = True
             collided = pygame.sprite.spritecollide(entity, self.tiles, False, False)
             for col in collided:
+                
                 entity.falling = False
-                entity.can_jump = True
+                entity.can_jump = True   """
 
             entity.act()
         
