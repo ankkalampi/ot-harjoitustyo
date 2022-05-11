@@ -45,9 +45,9 @@ class Camera:
     def move_camera(self, camera_mode):
         if camera_mode == Camera_Mode.FOLLOW:
             
-            ##self.viewport.move_ip(self.player.move_vector.x, self.player.move_vector.y)
-            self.viewport.x = self.player.rect.x - self.display_offset.x
-            self.viewport.y = self.player.rect.y - self.display_offset.y
+            self.viewport.move_ip(self.player.move_vector.x, self.player.move_vector.y)
+            ##self.viewport.x = self.player.rect.x - self.display_offset.x
+            ##self.viewport.y = self.player.rect.y - self.display_offset.y
             
             
 

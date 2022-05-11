@@ -8,15 +8,16 @@ from domain.Player import Player
 from domain.Initvalues import *
 from domain.Tile import Tile
 from domain.Camera import Camera
+import domain.Globals
  
 pygame.init()
- 
+
 
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 
 pygame.display.set_caption("Peli")
 
-
+domain.Globals.player = Player(0,0)
 level1 = Level("level1.txt")
 level1.load()
 player = level1.player
@@ -63,8 +64,7 @@ while run:
 
     
     pygame.display.update()
-    kello.tick(100)
-    ##print(kello.get_fps())
-    ##print("Falling: " , player.falling, "   Can jump: ", player.can_jump)
-    print("MOVE VECTOR Y:  " , player.move_vector.y, " FALLING: ", player.falling)
+    kello.tick(60)
+    ##print("FPS: " , kello.get_fps())
+    
 pygame.quit()

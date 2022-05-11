@@ -22,7 +22,7 @@ class Level:
         self.monsters = []
         self.NPCs = []
         self.tiles = []
-        self.player = Player(0,0)
+        self.player = domain.Globals.player
         self.all_entities = []
         self.all_terrains = []
         self.level_size = (0,0)
@@ -95,12 +95,6 @@ class Level:
 
         
         for entity in domain.Globals.all_entities:
-            """ entity.falling = True
-            collided = pygame.sprite.spritecollide(entity, self.tiles, False, False)
-            for col in collided:
-                
-                entity.falling = False
-                entity.can_jump = True   """
 
             entity.act()
         

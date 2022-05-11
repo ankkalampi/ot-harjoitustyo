@@ -19,4 +19,5 @@ class Player(Entity):
         super().__init__(x, y, filename, acceleration, jump_height, max_speed, jump_acceleration)
 
 
-    
+    def act(self):
+        self.moveself()
