@@ -1,7 +1,8 @@
 
 import pygame
 
-
+## application status
+global menu_active
 
 ## level attributes and contents
 global level_width 
